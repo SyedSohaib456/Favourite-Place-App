@@ -5,7 +5,7 @@ function PlaceItem({ place, onSelect }) {
  const latitude = place["location"]["lat"]
  const longitude = place["location"]["lng"]
   return (
-    <Pressable style={({ pressed }) => [styles.item, pressed && styles.pressed]} onPress={onSelect}>
+    <Pressable style={({ pressed }) => [styles.item, pressed && styles.pressed]} onPress={onSelect.bind(this,place.id)}>
       {place.imageUri ? (
         <Image style={styles.image} source={{ uri: place.imageUri }} resizeMode="cover" />
       ) : (
@@ -48,35 +48,35 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   image: {
-    width: '32%', // Fixed width for the image
-    height: '100%', // Fixed height for the image
-    borderRadius: 4, // Rounded corners
+    width: '50%',
+    height: '100%', 
+    borderRadius: 4, 
   },
   placeholder: {
-    width: 100, // Match the width of the image
-    height: 100, // Match the height of the image
+    width: 100, 
+    height: 100, 
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.gray200,
-    borderRadius: 4, // Rounded corners for placeholder
+    borderRadius: 4, 
   },
   info: {
     flex: 1,
-    paddingLeft: 10, // Space between image and text
+    paddingLeft: 10, 
   },
   title: {
     fontWeight: 'bold',
-    fontSize: 22,
+    fontSize: 20,
     color: Colors.gray700,
   },
   subTitle: {
     fontWeight: 'bold',
-    fontSize: 15,
+    fontSize: 13,
     color: Colors.gray700,
   },
   bold:{
     fontWeight:'bold',
-    fontSize:17,
+    fontSize:15,
   }
 });
 
