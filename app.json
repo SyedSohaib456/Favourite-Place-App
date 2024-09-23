@@ -1,4 +1,8 @@
-{
+{  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0",
+    "start": "expo start",
+    "build": "expo build"
+  },
   "expo": {
     "name": "Favourite-Places-App",
     "slug": "Favourite-Places-App",

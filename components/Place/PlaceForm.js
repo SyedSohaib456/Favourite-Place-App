@@ -1,44 +1,82 @@
-import { ScrollView, View, Text, TextInput, StyleSheet } from "react-native";
-import { Colors } from "../../contants/colors";
+import {
+  ScrollView,
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Alert,
+} from "react-native";
+import { Colors } from "../../contants/colors"; // Fix the import path
 import { useState } from "react";
-import ImagePickerComponent from "./ImagePicker";
+import ImagePicker from "./ImagePicker";
 import LocationPicker from "./LocationPicker";
 import Button from "../UI/Button";
 
-function PlaceForm() {
+const PlaceForm = ({ onCreatePlace }) => {
   const [enteredTitle, setEnteredTitle] = useState("");
-  
-  const [selectedImage,setSelectedImage]=useState();
-  const [pickedLocation,setPcikedLocation]=useState();
+  const [pickedLocation, setPickedLocation] = useState();
+  const [selectedImage, setSelectedImage] = useState();
 
-  function changeTitleHandler(enteredText) {
+  const changeTitleHandler = (enteredText) => {
     setEnteredTitle(enteredText);
-  }
-  
-  const takeImageHandler=()=>{};
+  };
 
-  const pickLocationHandler=()=>{};
+  const takeImageHandler = (imageUri) => {
+    setSelectedImage(imageUri);
+  };
 
-  const savePlaceHandler=()=>{
-     
-  }
+  const pickLocationHandler = (location) => {
+    setPickedLocation(location);
+  };
+
+  const savePlaceHandler = async () => {
+   
+    console.log("Location:", pickedLocation);
+
+    // if (!enteredTitle || !selectedImage || !pickedLocation || !pickedLocation.lat || !pickedLocation.lng) {
+    //   Alert.alert('Invalid input!', 'Please provide a title, image, and location.');
+    //   return;
+    // }
+
+    const placeData = {
+      title: enteredTitle,
+      imageUri: selectedImage,
+      location: {
+        lat: pickedLocation.lat,
+        lng: pickedLocation.lng,
+      },
+      id: new Date().toString() + Math.random().toString(),
+    };
+
+    try {
+      await onCreatePlace(placeData);
+    } catch (error) {
+      console.error("Error saving place:", error);
+      Alert.alert(
+        "An error occurred!",
+        "Could not save the place. Please try again."
+      );
+    }
+  };
 
   return (
     <ScrollView style={styles.form}>
       <View>
         <Text style={styles.label}>Title</Text>
         <TextInput
-          style={styles.input}
           onChangeText={changeTitleHandler}
           value={enteredTitle}
+          style={styles.input}
         />
       </View>
-      <ImagePickerComponent onTakeImage={}/>
-      <LocationPicker onPickLocation={} />
-      <Button whenPressed={savePlaceHandler} >Add Place</Button>
+      <ImagePicker onTakeImage={takeImageHandler} />
+      <LocationPicker onPickLocation={pickLocationHandler} />
+      <Button whenPressed={savePlaceHandler}>Add Place</Button>
     </ScrollView>
   );
-}
+};
+
+export default PlaceForm;
 
 const styles = StyleSheet.create({
   form: {
@@ -60,5 +98,3 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary100,
   },
 });
-
-export default PlaceForm;

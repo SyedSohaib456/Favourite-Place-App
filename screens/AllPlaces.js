@@ -1,10 +1,19 @@
-import { View,Text } from "react-native"
 import PlacesList from "../components/Place/PlacesList"
+import { useIsFocused } from "@react-navigation/native"
+import { useEffect, useState } from "react";
 
-function AllPlaces() {
-  return (
-     <PlacesList />
-  )
+function AllPlaces({ route }) {
+  const [loadedPlaces, setLoadedPlaces] = useState([]);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused && route.params) {
+      setLoadedPlaces((curPlaces) => [...curPlaces, route.params.place]);
+    }
+  }, [isFocused, route]);
+
+  return <PlacesList places={loadedPlaces} />;
 }
 
-export default AllPlaces
+export default AllPlaces;
